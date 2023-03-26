@@ -1,0 +1,50 @@
+version: '3.7'
+
+services:
+  details:
+    build:
+      context: ./product-details
+      target: development-build-stage
+      dockerfile: Dockerfile
+    container_name: details
+    ports:
+      - '3001:3001'
+    volumes:
+      - ./product-details/:/app
+      - /app/node_modules
+    restart: 'unless-stopped'
+    networks:
+      - backend
+  reviews:
+    build:
+      context: ./product-reviews
+      target: development-build-stage
+      dockerfile: Dockerfile
+    container_name: reviews
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./product-reviews/:/app
+      - /app/node_modules
+    restart: 'unless-stopped'
+    networks:
+      - backend
+    links:
+      - mongo
+    depends_on:
+      - mongo
+  mongo:
+    image: mvertes/alpine-mongo
+    container_name: mongo
+    ports:
+      - '27017:27017'
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local
