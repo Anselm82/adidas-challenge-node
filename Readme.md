@@ -15,6 +15,6 @@ Both services are dockerized.
 
 My proposal for a pipeline would be similar to the following:
 
-![alt text](https://github.com/Anselm82/adidas-challenge-node/blob/master/docs/image.jpg?raw=true)
+![alt text](https://github.com/Anselm82/adidas-challenge-node/blob/master/docs/pipeline.png)
 
 I'm more familiar with strongly typed compiled languages, that's why I added Kotlin but it can be perfectly NodeJS. Under a control versión like github, I will use Jenkins for the pipelines using Jenkinsfiles. It allows granular control but requires more management compared with other solutions like github actions or gitlab. In the pipeline, the stages will include: checkout, set new version and commit it, test and sonarqube qa check, containerize and store in ECR, and deploy to the cloud. All this depending on the branching strategy. Ideally the development process should also include TDD and the deployment phase, should also use IaC like terraform.
