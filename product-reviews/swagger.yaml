@@ -1,0 +1,344 @@
+securityDefinitions:
+  Authorization:
+    type: apiKey
+    name: Authorization
+    in: header
+security:
+  - Authorization: []
+tags:
+  - name: users
+    description: users API
+  - name: reviews
+    description: review API
+  - name: auth
+    description: auth API
+
+paths:
+  /login:
+    post:
+      tags:
+        - auth
+      summary: Login
+      parameters:
+        - name: body
+          in: body
+          description: user Data
+          required: true
+          schema:
+            $ref: "#/definitions/users"
+      responses:
+        201:
+          description: "Created"
+        400:
+          description: "Bad Request"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+  
+  /logout:
+    post:
+      tags:
+        - auth
+      summary: logout
+      parameters:
+        - name: body
+          in: body
+          description: user Data
+          required: true
+          schema:
+            $ref: "#/definitions/users"
+      responses:
+        201:
+          description: "Created"
+        400:
+          description: "Bad Request"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+  /signup:
+    post:
+      tags:
+        - auth
+      summary: Add User
+      parameters:
+        - name: body
+          in: body
+          description: user Data
+          required: true
+          schema:
+            $ref: "#/definitions/users"
+      responses:
+        201:
+          description: "Created"
+        400:
+          description: "Bad Request"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+  
+  # [GET] users
+  /users:
+    get:
+      tags:
+        - users
+      summary: Find All Users
+      responses:
+        200:
+          description: "OK"
+        500:
+          description: "Server Error"
+      security:
+        - Authorization: []
+ 
+    # [POST] users
+    post:
+      tags:
+        - users
+      summary: Add User
+      parameters:
+        - name: body
+          in: body
+          description: user Data
+          required: true
+          schema:
+            $ref: "#/definitions/users"
+      responses:
+        201:
+          description: "Created"
+        400:
+          description: "Bad Request"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+      security:
+        - Authorization: []
+  # [GET] users/id
+  /users/{id}:
+    get:
+      tags:
+        - users
+      summary: Find User By Id
+      parameters:
+        - name: id
+          type: string
+          in: path
+          description: User Id
+          required: true
+      responses:
+        200:
+          description: "OK"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+      security:
+        - Authorization: []
+    # [PUT] users/id
+    put:
+      tags:
+        - users
+      summary: Update User By Id
+      parameters:
+        - name: id
+          type: string
+          in: path
+          description: user Id
+          required: true
+        - name: body
+          in: body
+          description: user Data
+          required: true
+          schema:
+            $ref: "#/definitions/users"
+      security:
+        - Authorization: []
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Bad Request"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+    # [DELETE] users/id
+    delete:
+      tags:
+        - users
+      summary: Delete User By Id
+      parameters:
+        - name: id
+          type: string
+          in: path
+          description: user Id
+          required: true
+      security:
+        - Authorization: []
+      responses:
+        200:
+          description: "OK"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+# [GET] review/id
+  /review/{id}:
+    get:
+      tags:
+        - reviews
+      summary: Reviews Summary By Product Id
+      parameters:
+        - name: id
+          in: path
+          type: string
+          description: Review Id
+          required: true
+      responses:
+        200:
+          description: "OK"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+  # [GET] review/id
+  /reviews/{id}:
+    get:
+      tags:
+        - reviews
+      summary: Find Reviews By Product Id
+      parameters:
+        - name: id
+          in: path
+          type: string
+          description: Review Id
+          required: true
+      responses:
+        200:
+          description: "OK"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+    # [PUT] reviews/id
+    put:
+      tags:
+        - reviews
+      summary: Update Review By Id
+      parameters:
+        - name: id
+          in: path
+          type: string
+          description: review Id
+          required: true
+        - name: body
+          in: body
+          description: review Data
+          required: true
+          schema:
+            $ref: "#/definitions/review"
+      security:
+        - Authorization: []
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Bad Request"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+    # [DELETE] reviews/id
+    delete:
+      tags:
+        - reviews
+      summary: Delete Review By Id
+      parameters:
+        - name: id
+          in: path
+          type: string
+          description: reviews Id
+          required: true
+      security:
+        - Authorization: []
+      responses:
+        200:
+          description: "OK"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+  /reviews:
+    # [POST] reviews
+    post:
+      tags:
+        - reviews
+      summary: Add Review
+      parameters:
+        - name: body
+          in: body
+          description: Review Data
+          required: true
+          schema:
+            $ref: "#/definitions/review"
+      security:
+        - Authorization: []
+      responses:
+        201:
+          description: "Created"
+        400:
+          description: "Bad Request"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+# definitions
+definitions:
+  users:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+        description: user Email
+      password:
+        type: string
+        description: user Password
+  review:
+    type: object
+    required:
+      - score
+      - productId
+    properties:
+      productId:
+        type: string
+        description: product id
+      score:
+        type: integer
+        format: int64
+  reviewSummary:
+    type: object
+    required:
+      - averageRating
+      - productId
+      - reviews
+    properties:
+      productId:
+        type: string
+        description: product id
+      averageRating:
+        type: integer
+        format: int64
+      reviews:
+        type: integer
+        format: int32

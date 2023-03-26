@@ -1,0 +1,31 @@
+# baseURL
+@baseURL = http://localhost:3000
+
+###
+# Find All review by product id
+GET {{ baseURL }}/review/AB1234
+
+
+###
+# Create Review
+POST {{ baseURL }}/review
+Content-Type: application/json
+
+{
+    "productId": "AB1234",
+    "score": 10
+}
+
+###
+# Modify Review By Id
+PUT {{ baseURL }}/review/1
+Content-Type: application/json
+
+{
+    "productId": "AB1234",
+    "score": 10
+}
+
+###
+# Delete Review By Id
+DELETE {{ baseURL }}/review/1
