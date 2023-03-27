@@ -1,4 +1,8 @@
-# Architecture challenge
+# Solution Architect challenge
+
+The slides for the first challenge are in:
+
+[Slides](docs/Adidas-Challenge.pptx)
 
 This challenge has been a big one, for real. I've never coded in Node JS, the only typescript projects I've participate so far are frontend development.
 
