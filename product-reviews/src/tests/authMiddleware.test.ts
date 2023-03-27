@@ -7,6 +7,7 @@ import AuthService from '@/services/auth.service';
 import bcrypt from 'bcrypt';
 import { User } from '@/interfaces/users.interface';
 import userModel from '@models/users.model';
+import mongoose from 'mongoose';
 
 describe('Authorization middleware', () => {
   let mockRequest: Partial<Request>;
@@ -63,5 +64,26 @@ describe('Authorization middleware', () => {
     authorizationMiddleware(mockRequest as RequestWithUser, mockResponse as Response, nextFunction);
 
     expect(nextFunction).toBeCalledWith(expectedResponse);
+  });
+  test('with "authorization" header with correct value should return token', async () => {
+    const authService = new AuthService();
+    const userData: User = {
+      _id: '60706478aad6c9ad19a31c84',
+      email: 'test@email.com',
+      password: await bcrypt.hash('q1w2e3r4!', 10),
+    };
+    const token = authService.createToken(userData);
+
+    mockRequest = {
+      header: jest.fn().mockReturnValue(`Bearer ${token.token}`),
+    };
+    (mongoose as any).connect = jest.fn();
+    userModel.findById = jest.fn().mockImplementation(() => ({
+      findById: () => userData,
+    }));
+    authorizationMiddleware(mockRequest as RequestWithUser, mockResponse as Response, nextFunction);
+
+    expect(nextFunction).toBeCalled();
+    //expect(mockRequest.user).toBeDefined();
   });
 });

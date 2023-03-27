@@ -1,7 +1,20 @@
 {
-    "folders": [
-        {
-            "path": "."
-        }
-    ]
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "product-details",
+			"path": "product-details"
+		},
+		{
+			"name": "product-reviews",
+			"path": "product-reviews"
+		}
+	],
+	"settings": {
+		"jest.disabledWorkspaceFolders": [
+			"node",
+		]
+	}
 }
