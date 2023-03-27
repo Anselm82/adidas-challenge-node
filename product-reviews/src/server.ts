@@ -7,6 +7,6 @@ import ReviewRoute from './routes/reviews.routes.';
 
 validateEnv();
 
-const app = new App([new IndexRoute(), new UsersRoute(), new AuthRoute(), new ReviewRoute()]);
+export const app = new App([new IndexRoute(), new UsersRoute(), new AuthRoute(), new ReviewRoute()]);
 
 app.listen();

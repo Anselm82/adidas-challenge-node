@@ -38,7 +38,7 @@ class ReviewService {
   public async updateReview(reviewId: string, reviewData: ReviewDto): Promise<Review> {
     if (isEmpty(reviewData)) throw new HttpException(400, 'ReviewData is empty');
 
-    const updateReviewById: Review = await this.reviews.findByIdAndUpdate(reviewId, { reviewData });
+    const updateReviewById: Review = await this.reviews.findByIdAndUpdate(reviewId, reviewData);
     if (!updateReviewById) throw new HttpException(409, "Review doesn't exist");
 
     return updateReviewById;

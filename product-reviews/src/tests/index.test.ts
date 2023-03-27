@@ -8,11 +8,11 @@ afterAll(async () => {
 
 describe('Testing Index', () => {
   describe('[GET] /', () => {
-    it('response statusCode 200', () => {
+    it('response statusCode 302 redirected to api-docs', () => {
       const indexRoute = new IndexRoute();
       const app = new App([indexRoute]);
 
-      return request(app.getServer()).get(`${indexRoute.path}`).expect(200);
+      return request(app.getServer()).get(`${indexRoute.path}`).expect(302);
     });
   });
 });

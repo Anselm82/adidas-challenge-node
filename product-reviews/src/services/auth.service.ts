@@ -13,10 +13,10 @@ class AuthService {
 
   public async signup(userData: CreateUserDto): Promise<User> {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
-
-    const findUser: User = await this.users.findOne({ email: userData.email });
-    if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
-
+    try {
+      const findUser: User = await this.users.findOne({ email: userData.email });
+      if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
+    } catch (error) {}
     const hashedPassword = await hash(userData.password, 10);
     const createUserData: User = await this.users.create({ ...userData, password: hashedPassword });
 

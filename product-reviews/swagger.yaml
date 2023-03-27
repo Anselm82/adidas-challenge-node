@@ -197,7 +197,7 @@ paths:
         - name: id
           in: path
           type: string
-          description: Review Id
+          description: Product Id
           required: true
       responses:
         200:
@@ -217,7 +217,7 @@ paths:
         - name: id
           in: path
           type: string
-          description: Review Id
+          description: Reviews Id
           required: true
       responses:
         200:
@@ -235,11 +235,11 @@ paths:
         - name: id
           in: path
           type: string
-          description: review Id
+          description: Review Id
           required: true
         - name: body
           in: body
-          description: review Data
+          description: Review Data
           required: true
           schema:
             $ref: "#/definitions/review"
@@ -264,7 +264,7 @@ paths:
         - name: id
           in: path
           type: string
-          description: reviews Id
+          description: Review Id
           required: true
       security:
         - Authorization: []

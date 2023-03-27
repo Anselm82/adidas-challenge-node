@@ -26,12 +26,12 @@ services:
     networks:
       - backend
     links:
-      - mongo
+      - mongo-test
     depends_on:
-      - mongo
-  mongo:
+      - mongo-test
+  mongo-test:
     image: mvertes/alpine-mongo
-    container_name: mongo
+    container_name: mongo-test
     ports:
       - '27017:27017'
     networks:
