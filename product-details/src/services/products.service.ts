@@ -1,17 +1,17 @@
 import { ReviewsSummaryDto, ReviewDto, AdidasProductDto } from '@/dtos/models.dto';
 import fetch from 'node-fetch';
 import { ADIDAS_API, REVIEWS_SERVICE } from '@config';
-
 class ProductService {
   public async findProductById(productId: string) {
     const summary = this.getSummaryForProductId(productId);
     const reviews = this.getReviewsForProductId(productId);
-    const product = this.getProductById(productId);
-    const promises = await Promise.all([summary, reviews, product]).then(results => console.log(results));
+    //const product = this.getProductById(productId);
+    //Product promise hangs the server. Abort controller also breaks node, so no timeout is possible.
+    const promises = await Promise.all([summary, reviews]);
     return {
       summary: promises[0],
       reviews: promises[1],
-      product: promises[2],
+      product: productId,
     } as AdidasProductDto;
   }
 
@@ -35,7 +35,7 @@ class ProductService {
     return fetch(url, {
       method: 'GET',
       headers: {
-        headers: headers,
+        ...headers,
       },
     })
       .then((result: any) => result.json())

@@ -1,7 +1,7 @@
 import { IsNumber, IsString } from 'class-validator';
 
 export class AdidasProductDto {
-  public product: AdidasProduct;
+  public product: any;
 
   public summary: ReviewsSummaryDto;
 

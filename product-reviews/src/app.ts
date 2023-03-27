@@ -5,7 +5,7 @@ import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
-import { connect, set } from 'mongoose';
+import mongoose, { connect, set } from 'mongoose';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
@@ -13,6 +13,10 @@ import { dbConnection } from '@databases';
 import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
+import { Review } from '@interfaces/reviews.interface';
+import { User } from '@interfaces/users.interface';
+import userModel from './models/users.model';
+import reviewModel from './models/reviews.model';
 
 class App {
   public app: express.Application;
@@ -49,7 +53,9 @@ class App {
     if (this.env !== 'production') {
       set('debug', true);
     }
-    connect(dbConnection.url, dbConnection.options);
+    connect(dbConnection.url, dbConnection.options).then(() => {
+      this.initData();
+    });
   }
 
   private initializeMiddlewares() {
@@ -87,6 +93,37 @@ class App {
 
   private initializeErrorHandling() {
     this.app.use(errorMiddleware);
+  }
+
+  public async initData() {
+    try {
+      userModel.collection.drop();
+      reviewModel.collection.drop();
+      userModel.createCollection();
+      reviewModel.createCollection();
+      const products: string[] = ['GX3062', 'GZ3742', 'FZ6427', 'HQ8678', 'CQ2809', 'G48060', 'HQ2031', 'GY8556'];
+      const users: User[] = [];
+      for (let index = 0; index < 100; index++) {
+        const user = {} as User;
+        user.email = index + '@adidas-mail.com';
+        user.password = 'password';
+        const result = await userModel.create(user);
+        users.push(result);
+      }
+      console.log('Users inserted');
+      products.forEach(product => {
+        users.forEach(user => {
+          const review = {} as Review;
+          review.productId = product;
+          review.userId = user._id;
+          review.score = Math.random() * 10;
+          reviewModel.create(review);
+        });
+      });
+      console.log('Reviews inserted');
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 
