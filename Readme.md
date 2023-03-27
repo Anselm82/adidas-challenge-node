@@ -13,6 +13,8 @@ Sign up, login and user CRUD operations have been implemented. So does CRUD oper
 
 Both services are dockerized. 
 
+The Adidas API cannot be used due to authorization issues. I'm able to see in the browser but every call fails. Not specs or guidance has been provided for connection so I leave the project ready to add the result to the composition once that is solved.
+
 My proposal for a pipeline would be similar to the following:
 
 ![alt text](https://github.com/Anselm82/adidas-challenge-node/blob/master/docs/pipeline.png)
