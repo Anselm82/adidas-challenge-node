@@ -5,7 +5,6 @@ import request from 'supertest';
 import App from '@/app';
 import { CreateUserDto } from '@dtos/users.dto';
 import AuthRoute from '@routes/auth.route';
-import { User } from '@/interfaces/users.interface';
 
 afterAll(async () => {
   await new Promise<void>(resolve => setTimeout(() => resolve(), 500));
@@ -36,7 +35,7 @@ describe('Testing Auth', () => {
   });
 
   describe('[POST] /login', () => {
-    it('response should have the Set-Cookie header with the Authorization token', async () => {
+    it('response should have the header with the Authorization token', async () => {
       const userData: CreateUserDto = {
         email: 'test@email.com',
         password: 'q1w2e3r4!',
@@ -55,8 +54,23 @@ describe('Testing Auth', () => {
       const app = new App([authRoute]);
       const response = await request(app.getServer()).post(`${authRoute.path}login`).send(userData);
       const authHeader = response.headers['auth-token'];
-      console.log(authHeader);
       expect(authHeader);
+    });
+  });
+  describe('[POST] /signup', () => {
+    it('should return a user profile', async () => {
+      const route = new AuthRoute();
+      const app = new App([route]);
+      const user = {
+        _id: 'qpwoeiruty',
+        email: 'a@email.com',
+        password: await bcrypt.hash('q1w2e3r4!', 10),
+      };
+      (mongoose as any).connect = jest.fn();
+      (mongoose as any).findOne = jest.fn().mockReturnValue(null);
+      const userData = { email: 'a@email.com', password: 'q1w2e3r4!' };
+      route.authController.authService.signup = jest.fn().mockReturnValue(() => Promise.resolve(user));
+      return request(app.getServer()).post(`${route.path}signup`).send(userData).expect(201);
     });
   });
 });
